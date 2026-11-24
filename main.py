@@ -14,12 +14,22 @@ EXCUSE = (
 )
 
 
+def normalise(text: str) -> str:
+    """Collapse whitespace so the excuse is one clean line."""
+    return " ".join(text.split())
+
+
+def build_excuse() -> str:
+    text = normalise(EXCUSE)
+    assert 1 <= len(text) <= 200, f"excuse is {len(text)} characters"
+    assert "\n" not in text
+    return text
+
+
 def main() -> int:
     # One breath, deadpan, and it owns the loss: the agent blames its
     # own rounding, not the market, the data, or its human.
-    text = " ".join(EXCUSE.split())
-    assert 1 <= len(text) <= 200, f"excuse is {len(text)} characters"
-    assert "\n" not in text
+    text = build_excuse()
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as f:
